@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+         符号转义说明
+    &lt;          < 
+    &gt;          >  
+    &lt;&gt;     <>
+    &amp;        & 
+    &apos;       '
+    &quot;       "
+  <![CDATA[ 这里写你的SQL或者符号 ]]> 
+ -->
+<mapper namespace="com.fit.dao.TbsHttpRequestMapper" >
+
+<!-- Result Map 数据库映射到实体类  -->
+<resultMap id="tableMapToModel" type="com.fit.entity.TbsHttpRequestModel" >
+	<result column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="header" property="header"/>
+	<result column="firstPage" property="firstPage"/>
+	<result column="encoding" property="encoding"/>
+	<result column="listName" property="listName"/>
+	<result column="regexs" property="regexs"/>
+	<result column="arrtSplit" property="arrtSplit"/>
+	<result column="inserts" property="inserts"/>
+	<result column="listUrlRegex" property="listUrlRegex"/>
+	<result column="listUrlTest" property="listUrlTest"/>
+	<result column="listPageId" property="listPageId"/>
+	<result column="listSplitUrlChar" property="listSplitUrlChar"/>
+	<result column="listSplitUrl" property="listSplitUrl"/>
+	<result column="listRegexs" property="listRegexs"/>
+	<result column="listAttrSplit" property="listAttrSplit"/>
+	<result column="listInserts" property="listInserts"/>
+	<result column="contUrlRegex" property="contUrlRegex"/>
+	<result column="contUrlTest" property="contUrlTest"/>
+	<result column="contRegexs" property="contRegexs"/>
+	<result column="contAttrSplit" property="contAttrSplit"/>
+	<result column="contInserts" property="contInserts"/>
+	<result column="createTime" property="createTime"/>
+</resultMap>
+
+<!-- 所有条件分页 -->
+<sql id="model">
+    <include refid="modelCount"/>
+    ${pageUtil.orderByCondition}
+    <if test="pageUtil.paging == true" >
+    	${pageUtil.limit}
+    </if>
+</sql>
+
+<!-- 总记录数 -->
+<sql id="modelCount">
+	<where>
+	   <choose>
+	      <when test="pageUtil.like==true">
+	         <include refid="andOtherAllLike"/>
+	      </when>
+	      <otherwise>
+	     	 <include refid="andOtherAll"/>
+	      </otherwise>
+	   </choose>
+	   ${pageUtil.andCondition}
+	</where>
+    ${pageUtil.queryCondition}
+</sql>
+
+<!-- tbaleColumns  所有列 -->
+<!--  id,name,password,nickName,email,icon,state,time,count,createTime,remark -->
+<sql id="tbaleColumns">
+	<trim suffix="" suffixOverrides=",">
+		id,name,header,firstPage,encoding,listName,regexs,arrtSplit,inserts,listUrlRegex,listUrlTest,listPageId,listSplitUrlChar,listSplitUrl,listRegexs,listAttrSplit,listInserts,contUrlRegex,contUrlTest,contRegexs,contAttrSplit,contInserts,createTime,		
+	</trim>
+</sql>
+
+
+<!-- insertColumns 入库列 -->
+<sql id="insertColumns">
+	<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' " >
+			id,
+		</if>
+		<if test="name != null and name != '' " >
+			name,
+		</if>
+		<if test="header != null and header != '' " >
+			header,
+		</if>
+		<if test="firstPage != null and firstPage != '' " >
+			firstPage,
+		</if>
+		<if test="encoding != null and encoding != '' " >
+			encoding,
+		</if>
+		<if test="listName != null and listName != '' " >
+			listName,
+		</if>
+		<if test="regexs != null and regexs != '' " >
+			regexs,
+		</if>
+		<if test="arrtSplit != null and arrtSplit != '' " >
+			arrtSplit,
+		</if>
+		<if test="inserts != null and inserts != '' " >
+			inserts,
+		</if>
+		<if test="listUrlRegex != null and listUrlRegex != '' " >
+			listUrlRegex,
+		</if>
+		<if test="listUrlTest != null " >
+			listUrlTest,
+		</if>
+		<if test="listPageId != null " >
+			listPageId,
+		</if>
+		<if test="listSplitUrlChar != null and listSplitUrlChar != '' " >
+			listSplitUrlChar,
+		</if>
+		<if test="listSplitUrl != null and listSplitUrl != '' " >
+			listSplitUrl,
+		</if>
+		<if test="listRegexs != null and listRegexs != '' " >
+			listRegexs,
+		</if>
+		<if test="listAttrSplit != null and listAttrSplit != '' " >
+			listAttrSplit,
+		</if>
+		<if test="listInserts != null and listInserts != '' " >
+			listInserts,
+		</if>
+		<if test="contUrlRegex != null and contUrlRegex != '' " >
+			contUrlRegex,
+		</if>
+		<if test="contUrlTest != null " >
+			contUrlTest,
+		</if>
+		<if test="contRegexs != null and contRegexs != '' " >
+			contRegexs,
+		</if>
+		<if test="contAttrSplit != null and contAttrSplit != '' " >
+			contAttrSplit,
+		</if>
+		<if test="contInserts != null and contInserts != '' " >
+			contInserts,
+		</if>
+		<if test="createTime != null " >
+			createTime,
+		</if>
+    </trim>
+</sql>
+
+
+<!-- insertParams  入库值 -->
+<sql id="insertParams">
+	<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' " >
+			#{id},
+		</if>
+		<if test="name != null and name != '' " >
+			#{name},
+		</if>
+		<if test="header != null and header != '' " >
+			#{header},
+		</if>
+		<if test="firstPage != null and firstPage != '' " >
+			#{firstPage},
+		</if>
+		<if test="encoding != null and encoding != '' " >
+			#{encoding},
+		</if>
+		<if test="listName != null and listName != '' " >
+			#{listName},
+		</if>
+		<if test="regexs != null and regexs != '' " >
+			#{regexs},
+		</if>
+		<if test="arrtSplit != null and arrtSplit != '' " >
+			#{arrtSplit},
+		</if>
+		<if test="inserts != null and inserts != '' " >
+			#{inserts},
+		</if>
+		<if test="listUrlRegex != null and listUrlRegex != '' " >
+			#{listUrlRegex},
+		</if>
+		<if test="listUrlTest != null " >
+			#{listUrlTest},
+		</if>
+		<if test="listPageId != null " >
+			#{listPageId},
+		</if>
+		<if test="listSplitUrlChar != null and listSplitUrlChar != '' " >
+			#{listSplitUrlChar},
+		</if>
+		<if test="listSplitUrl != null and listSplitUrl != '' " >
+			#{listSplitUrl},
+		</if>
+		<if test="listRegexs != null and listRegexs != '' " >
+			#{listRegexs},
+		</if>
+		<if test="listAttrSplit != null and listAttrSplit != '' " >
+			#{listAttrSplit},
+		</if>
+		<if test="listInserts != null and listInserts != '' " >
+			#{listInserts},
+		</if>
+		<if test="contUrlRegex != null and contUrlRegex != '' " >
+			#{contUrlRegex},
+		</if>
+		<if test="contUrlTest != null " >
+			#{contUrlTest},
+		</if>
+		<if test="contRegexs != null and contRegexs != '' " >
+			#{contRegexs},
+		</if>
+		<if test="contAttrSplit != null and contAttrSplit != '' " >
+			#{contAttrSplit},
+		</if>
+		<if test="contInserts != null and contInserts != '' " >
+			#{contInserts},
+		</if>
+		<if test="createTime != null " >
+			#{createTime},
+		</if>
+    </trim>
+</sql>
+
+
+<!-- updateParams  更新列 -->
+<sql id="updateParams">
+	<trim suffix="" suffixOverrides=",">
+		<if test="id != null and id != '' " >
+			id=#{id},
+	    </if>
+		<if test="name != null and name != '' " >
+			name=#{name},
+	    </if>
+		<if test="header != null and header != '' " >
+			header=#{header},
+	    </if>
+		<if test="firstPage != null and firstPage != '' " >
+			firstPage=#{firstPage},
+	    </if>
+		<if test="encoding != null and encoding != '' " >
+			encoding=#{encoding},
+	    </if>
+		<if test="listName != null and listName != '' " >
+			listName=#{listName},
+	    </if>
+		<if test="regexs != null and regexs != '' " >
+			regexs=#{regexs},
+	    </if>
+		<if test="arrtSplit != null and arrtSplit != '' " >
+			arrtSplit=#{arrtSplit},
+	    </if>
+		<if test="inserts != null and inserts != '' " >
+			inserts=#{inserts},
+	    </if>
+		<if test="listUrlRegex != null and listUrlRegex != '' " >
+			listUrlRegex=#{listUrlRegex},
+	    </if>
+		<if test="listUrlTest != null " >
+			listUrlTest=#{listUrlTest},
+	    </if>
+		<if test="listPageId != null " >
+			listPageId=#{listPageId},
+	    </if>
+		<if test="listSplitUrlChar != null and listSplitUrlChar != '' " >
+			listSplitUrlChar=#{listSplitUrlChar},
+	    </if>
+		<if test="listSplitUrl != null and listSplitUrl != '' " >
+			listSplitUrl=#{listSplitUrl},
+	    </if>
+		<if test="listRegexs != null and listRegexs != '' " >
+			listRegexs=#{listRegexs},
+	    </if>
+		<if test="listAttrSplit != null and listAttrSplit != '' " >
+			listAttrSplit=#{listAttrSplit},
+	    </if>
+		<if test="listInserts != null and listInserts != '' " >
+			listInserts=#{listInserts},
+	    </if>
+		<if test="contUrlRegex != null and contUrlRegex != '' " >
+			contUrlRegex=#{contUrlRegex},
+	    </if>
+		<if test="contUrlTest != null " >
+			contUrlTest=#{contUrlTest},
+	    </if>
+		<if test="contRegexs != null and contRegexs != '' " >
+			contRegexs=#{contRegexs},
+	    </if>
+		<if test="contAttrSplit != null and contAttrSplit != '' " >
+			contAttrSplit=#{contAttrSplit},
+	    </if>
+		<if test="contInserts != null and contInserts != '' " >
+			contInserts=#{contInserts},
+	    </if>
+		<if test="createTime != null " >
+			createTime=#{createTime},
+	    </if>
+    </trim>
+</sql>
+
+
+<!-- 条件 查询  , 去掉主键列-->
+<sql id="andOther">
+	<trim  suffixOverrides="," >
+	  
+		<if test="name != null " >
+			    and name =  #{name}
+		</if>
+		<if test="header != null " >
+			    and header =  #{header}
+		</if>
+		<if test="firstPage != null " >
+			    and firstPage =  #{firstPage}
+		</if>
+		<if test="encoding != null " >
+			    and encoding =  #{encoding}
+		</if>
+		<if test="listName != null " >
+			    and listName =  #{listName}
+		</if>
+		<if test="regexs != null " >
+			    and regexs =  #{regexs}
+		</if>
+		<if test="arrtSplit != null " >
+			    and arrtSplit =  #{arrtSplit}
+		</if>
+		<if test="inserts != null " >
+			    and inserts =  #{inserts}
+		</if>
+		<if test="listUrlRegex != null " >
+			    and listUrlRegex =  #{listUrlRegex}
+		</if>
+		<if test="listUrlTest != null " >
+			    and listUrlTest =  #{listUrlTest}
+		</if>
+		<if test="listPageId != null " >
+			    and listPageId =  #{listPageId}
+		</if>
+		<if test="listSplitUrlChar != null " >
+			    and listSplitUrlChar =  #{listSplitUrlChar}
+		</if>
+		<if test="listSplitUrl != null " >
+			    and listSplitUrl =  #{listSplitUrl}
+		</if>
+		<if test="listRegexs != null " >
+			    and listRegexs =  #{listRegexs}
+		</if>
+		<if test="listAttrSplit != null " >
+			    and listAttrSplit =  #{listAttrSplit}
+		</if>
+		<if test="listInserts != null " >
+			    and listInserts =  #{listInserts}
+		</if>
+		<if test="contUrlRegex != null " >
+			    and contUrlRegex =  #{contUrlRegex}
+		</if>
+		<if test="contUrlTest != null " >
+			    and contUrlTest =  #{contUrlTest}
+		</if>
+		<if test="contRegexs != null " >
+			    and contRegexs =  #{contRegexs}
+		</if>
+		<if test="contAttrSplit != null " >
+			    and contAttrSplit =  #{contAttrSplit}
+		</if>
+		<if test="contInserts != null " >
+			    and contInserts =  #{contInserts}
+		</if>
+		<if test="createTime != null " >
+			    and createTime =  #{createTime}
+		</if>
+	</trim>
+</sql>
+
+
+<!-- 查询条件  包含所有 -->
+<sql id="andOtherAll">
+	<trim  suffixOverrides="," >
+		<if test="id != null and id != '' " >
+			and id =  #{id}
+	    </if>
+		<if test="name != null and name != '' " >
+			and name =  #{name}
+	    </if>
+		<if test="header != null and header != '' " >
+			and header =  #{header}
+	    </if>
+		<if test="firstPage != null and firstPage != '' " >
+			and firstPage =  #{firstPage}
+	    </if>
+		<if test="encoding != null and encoding != '' " >
+			and encoding =  #{encoding}
+	    </if>
+		<if test="listName != null and listName != '' " >
+			and listName =  #{listName}
+	    </if>
+		<if test="regexs != null and regexs != '' " >
+			and regexs =  #{regexs}
+	    </if>
+		<if test="arrtSplit != null and arrtSplit != '' " >
+			and arrtSplit =  #{arrtSplit}
+	    </if>
+		<if test="inserts != null and inserts != '' " >
+			and inserts =  #{inserts}
+	    </if>
+		<if test="listUrlRegex != null and listUrlRegex != '' " >
+			and listUrlRegex =  #{listUrlRegex}
+	    </if>
+		<if test="listUrlTest != null " >
+			and listUrlTest =  #{listUrlTest}
+		</if>
+		<if test="listPageId != null " >
+			and listPageId =  #{listPageId}
+		</if>
+		<if test="listSplitUrlChar != null and listSplitUrlChar != '' " >
+			and listSplitUrlChar =  #{listSplitUrlChar}
+	    </if>
+		<if test="listSplitUrl != null and listSplitUrl != '' " >
+			and listSplitUrl =  #{listSplitUrl}
+	    </if>
+		<if test="listRegexs != null and listRegexs != '' " >
+			and listRegexs =  #{listRegexs}
+	    </if>
+		<if test="listAttrSplit != null and listAttrSplit != '' " >
+			and listAttrSplit =  #{listAttrSplit}
+	    </if>
+		<if test="listInserts != null and listInserts != '' " >
+			and listInserts =  #{listInserts}
+	    </if>
+		<if test="contUrlRegex != null and contUrlRegex != '' " >
+			and contUrlRegex =  #{contUrlRegex}
+	    </if>
+		<if test="contUrlTest != null " >
+			and contUrlTest =  #{contUrlTest}
+		</if>
+		<if test="contRegexs != null and contRegexs != '' " >
+			and contRegexs =  #{contRegexs}
+	    </if>
+		<if test="contAttrSplit != null and contAttrSplit != '' " >
+			and contAttrSplit =  #{contAttrSplit}
+	    </if>
+		<if test="contInserts != null and contInserts != '' " >
+			and contInserts =  #{contInserts}
+	    </if>
+		<if test="createTime != null " >
+			and createTime =  #{createTime}
+		</if>
+	</trim>
+</sql>
+
+
+<!-- 模糊查询判断 -->
+<sql id="andOtherAllLike">
+	<trim  suffixOverrides="," >
+		<if test="id != null and id != '' " >
+			and id like  &apos;%${id}%&apos;
+	    </if>
+		<if test="name != null and name != '' " >
+			and name like  &apos;%${name}%&apos;
+	    </if>
+		<if test="header != null and header != '' " >
+			and header like  &apos;%${header}%&apos;
+	    </if>
+		<if test="firstPage != null and firstPage != '' " >
+			and firstPage like  &apos;%${firstPage}%&apos;
+	    </if>
+		<if test="encoding != null and encoding != '' " >
+			and encoding like  &apos;%${encoding}%&apos;
+	    </if>
+		<if test="listName != null and listName != '' " >
+			and listName like  &apos;%${listName}%&apos;
+	    </if>
+		<if test="regexs != null and regexs != '' " >
+			and regexs like  &apos;%${regexs}%&apos;
+	    </if>
+		<if test="arrtSplit != null and arrtSplit != '' " >
+			and arrtSplit like  &apos;%${arrtSplit}%&apos;
+	    </if>
+		<if test="inserts != null and inserts != '' " >
+			and inserts like  &apos;%${inserts}%&apos;
+	    </if>
+		<if test="listUrlRegex != null and listUrlRegex != '' " >
+			and listUrlRegex like  &apos;%${listUrlRegex}%&apos;
+	    </if>
+		<if test="listUrlTest != null " >
+			and listUrlTest like  &apos;%${listUrlTest}%&apos;
+		</if>
+		<if test="listPageId != null " >
+			and listPageId like  &apos;%${listPageId}%&apos;
+		</if>
+		<if test="listSplitUrlChar != null and listSplitUrlChar != '' " >
+			and listSplitUrlChar like  &apos;%${listSplitUrlChar}%&apos;
+	    </if>
+		<if test="listSplitUrl != null and listSplitUrl != '' " >
+			and listSplitUrl like  &apos;%${listSplitUrl}%&apos;
+	    </if>
+		<if test="listRegexs != null and listRegexs != '' " >
+			and listRegexs like  &apos;%${listRegexs}%&apos;
+	    </if>
+		<if test="listAttrSplit != null and listAttrSplit != '' " >
+			and listAttrSplit like  &apos;%${listAttrSplit}%&apos;
+	    </if>
+		<if test="listInserts != null and listInserts != '' " >
+			and listInserts like  &apos;%${listInserts}%&apos;
+	    </if>
+		<if test="contUrlRegex != null and contUrlRegex != '' " >
+			and contUrlRegex like  &apos;%${contUrlRegex}%&apos;
+	    </if>
+		<if test="contUrlTest != null " >
+			and contUrlTest like  &apos;%${contUrlTest}%&apos;
+		</if>
+		<if test="contRegexs != null and contRegexs != '' " >
+			and contRegexs like  &apos;%${contRegexs}%&apos;
+	    </if>
+		<if test="contAttrSplit != null and contAttrSplit != '' " >
+			and contAttrSplit like  &apos;%${contAttrSplit}%&apos;
+	    </if>
+		<if test="contInserts != null and contInserts != '' " >
+			and contInserts like  &apos;%${contInserts}%&apos;
+	    </if>
+		<if test="createTime != null " >
+			and createTime like  &apos;%${createTime}%&apos;
+		</if>
+	</trim>
+</sql>
+
+<!-- where 条件  -->
+<sql id="where">
+     where 1=1
+</sql>
+
+<!-- columnKey  主键 列名称 ,视图获取不到主键 需要设置 -->
+<sql id="columnKey">
+     and id=#{id}
+</sql>
+
+
+<!-- 自定义查询 -->
+<sql id="sql">
+   <if test="sql != null and sql !=''">
+       ${sql}
+   </if>
+   <if test="sql == null || sql==''">
+      select <include refid="tbaleColumns"/> from TbsHttpRequest <include refid="where"/>
+   </if>
+</sql>
+
+<!-- 查询条件 -->
+<sql id="queryCondition">
+     <if test="queryCondition != null and queryCondition != ''">
+         ${queryCondition}
+     </if>
+</sql>
+
+
+<!-- 添加,插入记录   -->
+<insert id="insert"  parameterType="com.fit.entity.TbsHttpRequestModel" >
+    insert into TbsHttpRequest(<include refid="insertColumns"/>) values(<include refid="insertParams"/>);
+</insert>
+
+<!-- 添加,SQL添加   -->
+<insert id="insertBySql" parameterType="java.lang.String">
+    <include refid="sql"/>
+</insert>
+
+<!-- 删除,主键删除   -->
+<delete id="deleteByPrimaryKey" parameterType="com.fit.entity.TbsHttpRequestModel">
+    delete from TbsHttpRequest<include refid="where"/><include refid="columnKey"/>
+</delete>
+
+<!-- 删除,实体删除   -->
+<delete id="deleteByEntity" parameterType="com.fit.entity.TbsHttpRequestModel">
+    delete from TbsHttpRequest<include refid="where"/><include refid="andOtherAll"/>
+</delete>
+
+<!-- 删除,SQL删除   -->
+<delete id="deleteBySql" parameterType="java.lang.String">
+      <include refid="sql"/>
+</delete>
+
+<!-- 修改,主键更新  -->
+<update id="updateByPrimaryKey" parameterType="com.fit.entity.TbsHttpRequestModel" >
+	update TbsHttpRequest <set><include refid="updateParams"/></set><include refid="where"/><include refid="columnKey"/>
+</update>
+
+<!-- 修改,SQL更新 -->
+<update id="updateBySql" parameterType="java.lang.String">
+	  <include refid="sql"/>
+</update>
+
+<!-- 查询,主键查询   -->
+<select id="selectByPrimaryKey"  resultMap="tableMapToModel" parameterType="java.lang.Object">
+	select <include refid="tbaleColumns"/> from TbsHttpRequest <include refid="where"/> <include refid="columnKey"/>
+</select>
+
+<!-- 查询,实体查询   -->
+<select id="selectByEntiry"  resultMap="tableMapToModel" parameterType="com.fit.entity.TbsHttpRequestModel">
+	select <include refid="tbaleColumns"/> from TbsHttpRequest <include refid="where"/> <include refid="andOtherAll"/>
+</select>
+
+<!-- 查询,SQL -->
+<select id="selectBySql"  resultMap="tableMapToModel" parameterType="java.lang.String">
+     <include refid="sql"/>
+</select>
+  	
+<!-- 查询 ,总行数,分页 ,模型 -->
+<select id="selectByModelCount" resultType="java.lang.Integer"  parameterType="com.fit.entity.TbsHttpRequestModel">
+	select count(1) from TbsHttpRequest <include refid="modelCount"/>
+</select>
+  	
+<!-- 查询,排序,分页,模型  -->
+<select id="selectByModel" resultMap="tableMapToModel"  parameterType="com.fit.entity.TbsHttpRequestModel">
+	select <include refid="tbaleColumns"/>from TbsHttpRequest <include refid="model"/>
+</select>
+
+<!-- 查询,总行数,Map -->
+<select id="selectByMapCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+	select count(1) from TbsHttpRequest <include refid="where"/><include refid="andOtherAll"/>
+    ${queryCondition}
+	<if test="andCondition !=null and andCondition !=''">
+	   and ${andCondition}
+	</if>
+	<if test="orderCondition != null and queryCondition != ''" >
+    	order by ${orderCondition}
+    </if>
+</select>
+  	
+<!-- 查询,参数查询,Map -->
+<select id="selectByMap" resultMap="tableMapToModel"  parameterType="java.util.Map">
+	select <include refid="tbaleColumns"/>from TbsHttpRequest <include refid="where"/><include refid="andOtherAll"/>
+    ${queryCondition}
+	<if test="andCondition !=null and andCondition !=''">
+	   and ${andCondition}
+	</if>
+	<if test="orderCondition != null and queryCondition != ''" >
+    	order by ${orderCondition}
+    </if>
+</select>
+
+<!-- 查询,总行数,Map分页 -->
+<select id="selectByMapPagingCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+	select count(0) from TbsHttpRequest <include refid="where"/><include refid="andOtherAll"/>
+    ${queryCondition}
+	<if test="andCondition !=null and andCondition !=''">
+	   and ${andCondition}
+	</if>
+    ${pageUtil.queryCondition}
+    ${pageUtil.andCondition}
+</select>
+
+<!-- 查询,参数查询,Map分页 -->
+<select id="selectByMapPaging" resultMap="tableMapToModel"  parameterType="java.util.Map">
+	select <include refid="tbaleColumns"/>from TbsHttpRequest <include refid="where"/><include refid="andOtherAll"/>
+	${queryCondition}
+	<if test="andCondition !=null and andCondition !=''">
+	   and ${andCondition}
+	</if>
+	<if test="orderCondition != null and queryCondition != ''" >
+    	order by ${orderCondition}
+    </if>
+    ${pageUtil.queryCondition}
+    ${pageUtil.andCondition}
+    ${pageUtil.orderByCondition}
+    ${pageUtil.limit}
+</select>
+
+<!--查询, 图表 -->
+<select id="charts" parameterType="java.util.Map" resultType="java.util.Map">
+    <!-- '%Y-%m-%d %H:%i:%s' -->
+	SELECT COUNT(*),DATE_FORMAT(createTime,'${groupTimeFormat}') as createTime  FROM TbsHttpRequest 
+	<if test="startTimeFormat!=null and endTimeFormat!=null">
+		WHERE 
+		createTime&gt;=DATE_FORMAT(NOW(), '${startTimeFormat}') AND createTime&lt;=DATE_FORMAT(NOW(), '${endTimeFormat}') 
+	</if> 
+	GROUP BY DATE_FORMAT(createTime,'${groupTimeFormat}')
+</select>
+
+<!--/////////////// 级联递归查询  一对多 ///////////////-->
+<resultMap type="com.fit.entity.TbsHttpRequestModel" id="tableMapToModelChild" extends="tableMapToModel">
+  
+   <!-- 一对一关联   注意 顺序       需要用时开启 -->
+   <!--  
+  <association property="tbsHttpRequestModel" column="parentId" select="getParent">
+  		 
+  </association>
+  -->
+  
+  <!-- 一对多关联  -->
+  <collection property="listTbsHttpRequestModel" column="id" select="getChild">
+      <!-- 对象的属性 -->
+  </collection>
+  
+</resultMap>
+ 
+<!--  
+<select id="getParent" resultMap="tableMapToModelChild" parameterType="String">
+     SELECT * FROM TbsHttpRequest where id=#{parentId}
+</select>
+-->
+
+<select id="getChild" resultMap="tableMapToModelChild" parameterType="String">
+     SELECT * FROM TbsHttpRequest where parentId=#{id}
+</select>
+
+<select id="selectByChild" resultMap="tableMapToModelChild"  parameterType="com.fit.entity.TbsHttpRequestModel">
+    SELECT <include refid="tbaleColumns"/>FROM TbsHttpRequest
+    <where>
+        <include refid="andOtherAll"/>
+	   	${pageUtil.andCondition}
+    </where>
+    	${pageUtil.queryCondition}
+    	${pageUtil.orderByCondition}
+    <if test="pageUtil.paging == true" >
+    	${pageUtil.limit}
+    </if>
+    
+</select>
+
+<!--/////////////// 级联递归查询  一对多 ///////////////-->
+
+
+<!--//////////////////////增加/////////////////////// -->
+</mapper>   
